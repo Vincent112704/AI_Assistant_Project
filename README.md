@@ -72,9 +72,6 @@ User Input → Telegram Input Handler Service (Producer)
 
 ## Tech Stack
 
-### Frontend
-- **React**: User interface and application client
-
 ### Backend
 - **FastAPI**: High-performance web framework for building APIs and services
 
@@ -132,24 +129,6 @@ pip install -r requirements.txt
 python -m uvicorn main:app --reload
 ```
 
-### Frontend Setup
-
-1. Navigate to the frontend directory:
-```bash
-cd frontend
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Configure environment variables (see [Configuration](#configuration))
-
-4. Start the development server:
-```bash
-npm start
-```
 
 ### Docker Setup
 
@@ -198,11 +177,6 @@ GOOGLE_DOCS_API_KEY=<your-google-docs-api-key>
 NOTION_API_KEY=<your-notion-api-key>
 ```
 
-#### Frontend Configuration
-```
-REACT_APP_API_BASE_URL=http://localhost:8000
-REACT_APP_ENVIRONMENT=development
-```
 
 ### Firebase Setup
 
@@ -290,20 +264,6 @@ school-assistant-agent/
 │   ├── main.py                      # FastAPI Application Entry Point
 │   └── requirements.txt             # Python Dependencies
 |   
-├── frontend/
-│   ├── src/
-│   │   ├── components/              # React Components
-│   │   ├── pages/                   # Page Components
-│   │   ├── services/                # API Services
-│   │   ├── App.js                   # Main App Component
-│   │   └── index.js                 # React Entry Point
-|   ├── Dockerfile
-│   ├── public/                      # Static Assets
-│   └── package.json                 # Node Dependencies
-├── docker-compose.yml               # Docker Compose Configuration
-├── .env.example                     # Environment Variables Template
-├── .gitignore                       # Git Ignore Rules
-└── README.md                        # This File
 ```
 
 ## Contributing
