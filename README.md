@@ -1,4 +1,6 @@
 # School Assistant Agent
+//todo review and update README.md 
+
 
 A scalable, event-driven school assistant system that processes user requests through Telegram and leverages AI to provide intelligent responses and file management.
 
