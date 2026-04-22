@@ -75,7 +75,6 @@ COMPLEX_LAYER = [
 
 def classify_query(query: str) -> str:
     query = preprocess_string(query)
-    query = query.split()
     for word in query:
         if word in SIMPLE_LAYER:
             return "simple"
