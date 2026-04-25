@@ -1,0 +1,2 @@
+Tools will be local so no need for MCP for API keys to access external Tools
+implement the tools yourself (e.g., create_docx_file, docx_to_pdf, ...)
