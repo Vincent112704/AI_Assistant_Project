@@ -1,0 +1,1 @@
+look into built-in langchain agent see if it's better to use it or stick to my own implementation

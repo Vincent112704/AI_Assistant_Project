@@ -14,9 +14,13 @@ SerperWrapper = GoogleSerperAPIWrapper(serper_api_key=SERPER_API_KEY)
 @tool
 def search_internet(query: str) -> str:
     """
-    A tool that searches the internet for a given query and returns the result of the query
-    args: string
-    return: string
+    Searches the internet for a given query and returns the result of the query
+    
+    Args: 
+        query: The query to seaarch for on the internet
+    Returns:
+        The result of the query
+    
     """
     result = SerperWrapper.run(query) # might have to parse this depending on how llm passes input
     return result
