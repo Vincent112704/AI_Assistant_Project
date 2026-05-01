@@ -21,6 +21,7 @@ def execute_agent(query: str) -> str:
         logging.info(f"Query classified as: {query_classification}")
 
         if query_classification == "simple":
+            logging.info("Executing simple agent...")
             agent = SimpleAgent(tools=[search_internet])
             result = agent.run(query)
             return result

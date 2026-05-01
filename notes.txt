@@ -1,0 +1,12 @@
+todo:
+    - Test whether simple agent is working
+    - create a docx to pdf service because telegram sendDocument api only accepts PDF or ZIP 
+    - Finalize the create_docx_tool on whether you should separate the logic and the tool as 
+      they seem kinda redundant right now
+    - register all tools in registry.py
+    - set up firebase
+    - create the telegram_push_message_service 
+    - set up caching 
+    - set up queueing system for jobs (seems kinda overkill for a personal use project but just add it anyway)
+      explore RabbitMQ this
+    

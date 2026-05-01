@@ -1,6 +1,7 @@
 from docx import Document
 from pydantic import BaseModel
 
+
 class Sections(BaseModel):
     section_heading: str
     section_content: str
@@ -10,8 +11,6 @@ class DocumentContent(BaseModel):
 
 
     
-
-
 
 def document_generator(title: str, content: DocumentContent) -> Document:
     """
@@ -28,7 +27,7 @@ def document_generator(title: str, content: DocumentContent) -> Document:
     Returns:
         a Document object that can be saved as a docx file
     """
-
+    
     docx = Document()
     docx.add_heading(title, level=0)
 
@@ -40,27 +39,27 @@ def document_generator(title: str, content: DocumentContent) -> Document:
 
 
 
-title = "AI Adoption Report"
+# title = "AI Adoption Report"
 
-content = DocumentContent(
-    sections=[
-        Sections(
-            section_heading="Introduction",
-            section_content="This is the introduction section of the document."
-        ),
-        Sections(
-            section_heading="Benefits of AI",
-            section_content="AI helps businesses automate tasks and improve efficiency."
-        ),
-        Sections(
-            section_heading="Conclusion",
-            section_content="AI adoption will continue to grow across industries."
-        )
-    ]
-)
+# content = DocumentContent(
+#     sections=[
+#         Sections(
+#             section_heading="Introduction",
+#             section_content="This is the introduction section of the document."
+#         ),
+#         Sections(
+#             section_heading="Benefits of AI",
+#             section_content="AI helps businesses automate tasks and improve efficiency."
+#         ),
+#         Sections(
+#             section_heading="Conclusion",
+#             section_content="AI adoption will continue to grow across industries."
+#         )
+#     ]
+# )
 
-doc = document_generator(title, content.sections)
-doc.save("test.docx")
+# doc = document_generator(title, content.sections)
+# doc.save("test.docx")
 
 
 
