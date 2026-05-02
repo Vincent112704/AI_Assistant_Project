@@ -7,18 +7,19 @@ load_dotenv()
 
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
+
 logging.basicConfig(level=logging.INFO)
 
-
-def send_telegram_message(chat_id: str, message: str) -> bool:
+#I'll just hardcode chat_id because I am the only one using this bot for now
+def send_telegram_message(Document) -> bool:
     # if sending document
+
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendDocument" #currently only accepts ZIP or PDF 
     payload = {
-        "chat_id": chat_id,
-        "text": message
+        "chat_id": os.getenv("TELEGRAM_CHAT_ID"),
     }
     try:
-        response = requests.post(url, json=payload)
+        response = requests.post(url, data=payload) #files = {"document": open(Document, "rb")} if Document else None
         if response.status_code == 200:
             logging.info("Message sent successfully.")
             return True

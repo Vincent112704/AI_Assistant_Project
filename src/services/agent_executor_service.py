@@ -28,6 +28,10 @@ def execute_agent(query: str) -> str:
         #elif query_classification == "complex":
             #run complex agent
         #else: do something about the unknown classification returned (i don't know yet)
+
+        #after finishing executing the agent
+        #call telegram push message service to send the result back to the user via telegram bot
+        #send_telegram_message(result)
         
 
     except Exception as e:
