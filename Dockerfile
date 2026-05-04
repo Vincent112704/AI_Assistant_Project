@@ -1,13 +1,17 @@
-FROM python:3.10-slim
+FROM python:3.13
 
 WORKDIR /app
 
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# COPY requirements.txt .
+# RUN pip install --upgrade pip
+# RUN pip install --no-cache-dir -r requirements.txt
 
-COPY .env .
-COPY src/ ./src/ 
+RUN pip install poetry
+COPY poetry.lock pyproject.toml ./
+RUN poetry install --no-root
+
+COPY . . 
 
 EXPOSE 8000
 EXPOSE 5678

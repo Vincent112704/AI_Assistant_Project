@@ -9,4 +9,17 @@ todo:
     - set up caching 
     - set up queueing system for jobs (seems kinda overkill for a personal use project but just add it anyway)
       explore RabbitMQ this
-    
+
+Notes(2026-05-04):
+  - Issue(Docker build): 
+    - Windows-only transitive dependency (pywin32) can break Linux Docker builds even if not directly installed
+    - Common chain: openai-agents → mcp → pywin32 or docx2pdf → pywin32
+    - Root cause is platform incompatibility, not Poetry/pip issue
+    - Dependency resolvers include packages based on compatibility, but do not guarantee runtime OS match
+    - Debug via dependency tree (poetry show --tree or pipdeptree -r -p pywin32 (reverse tree look up))
+    - Fix by removing Windows-specific packages or isolating them via OS markers (sys_platform == "win32")
+    - You might have to use alternatives for docx2pdf because of OS incompatibility (check on other libraries that is supports linux)
+  - Issue(telegram_push_message_service): 
+    - ERROR:root:Failed to send document. Status code: 403, Response: {"ok":false,"error_code":403,"description":"Forbidden: bots can't send messages to bots"}
+    - Might have something to do with the chat_id passed. Verify chat_id
+    - review documentation on the /sendDocument endpoint
