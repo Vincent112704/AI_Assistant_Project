@@ -212,31 +212,6 @@ idna = ">=2.8"
 trio = ["trio (>=0.32.0)"]
 
 [[package]]
-name = "appscript"
-version = "1.4.0"
-description = "Control AppleScriptable applications from Python."
-optional = false
-python-versions = "*"
-groups = ["main"]
-markers = "sys_platform == \"darwin\""
-files = [
-    {file = "appscript-1.4.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:0306c09f55f799716fc2badd072b16538a797d2acbc3ea2adc55553293d18188"},
-    {file = "appscript-1.4.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:de0b644f1b86f05d7526e5621bd2fcf36f077fc90fd328e63ba12dd3e267eb9e"},
-    {file = "appscript-1.4.0-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:48d961f83be1de6aa9286d0cfae2060d3ded4302902873d34cd45ca2757c50b3"},
-    {file = "appscript-1.4.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:6ab3be221cf5e798fe1a1930b93c4b791c5cae4e5fd781cb9fb6e35fb7930274"},
-    {file = "appscript-1.4.0-cp312-cp312-macosx_10_13_universal2.whl", hash = "sha256:ddecaff061f829fcfe5b0452a272f9aa5ac1f61b3929fa18b6f0f100e8eaf306"},
-    {file = "appscript-1.4.0-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:8edab6b8def4862c9582e5d8f5f72c23a3749f2d059f80e4b5ae101a53805116"},
-    {file = "appscript-1.4.0-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:7710db497d279d819f487dea686866b56c6c1e557befef4631b78553c523334c"},
-    {file = "appscript-1.4.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:0396978b95e06c2cabba117cc172add1df188c51a1b80fc6648aad16890a84c8"},
-    {file = "appscript-1.4.0-cp314-cp314-macosx_10_13_universal2.whl", hash = "sha256:1a5747425d2a5732e2854cab0d0dc893ef077cabd7d57f7ec4caea2ac313e19f"},
-    {file = "appscript-1.4.0-cp314-cp314-macosx_10_13_x86_64.whl", hash = "sha256:5efce3302c00674b769b79938cc5f66f7791ef45c6419e850a5f1c8f9fcefcc1"},
-    {file = "appscript-1.4.0.tar.gz", hash = "sha256:b2c6fc770bf822ea45529c7084bc0ee340e67ab260016b01d28e0449ec8723be"},
-]
-
-[package.dependencies]
-lxml = ">=4.7.1"
-
-[[package]]
 name = "attrs"
 version = "26.1.0"
 description = "Classes Without Boilerplate"
@@ -704,23 +679,6 @@ doq = ["aioquic (>=1.2.0)"]
 idna = ["idna (>=3.10)"]
 trio = ["trio (>=0.30)"]
 wmi = ["wmi (>=1.5.1) ; platform_system == \"Windows\""]
-
-[[package]]
-name = "docx2pdf"
-version = "0.1.8"
-description = "Convert docx to pdf on Windows or macOS directly using Microsoft Word (must be installed)."
-optional = false
-python-versions = ">=3.5"
-groups = ["main"]
-files = [
-    {file = "docx2pdf-0.1.8-py3-none-any.whl", hash = "sha256:00be1401fd486640314e993423a0a1cbdbc21142186f68549d962d505b2e8a12"},
-    {file = "docx2pdf-0.1.8.tar.gz", hash = "sha256:6d2c20f9ad36eec75f4da017dc7a97622946954a6124ca0b11772875fa86fbed"},
-]
-
-[package.dependencies]
-appscript = {version = ">=1.1.0", markers = "sys_platform == \"darwin\""}
-pywin32 = {version = ">=227", markers = "sys_platform == \"win32\""}
-tqdm = ">=4.41.0"
 
 [[package]]
 name = "email-validator"
@@ -2461,6 +2419,7 @@ description = "Model Context Protocol SDK"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
+markers = "sys_platform == \"win32\""
 files = [
     {file = "mcp-1.27.0-py3-none-any.whl", hash = "sha256:5ce1fa81614958e267b21fb2aa34e0aea8e2c6ede60d52aba45fd47246b4d741"},
     {file = "mcp-1.27.0.tar.gz", hash = "sha256:d3dc35a7eec0d458c1da4976a48f982097ddaab87e278c5511d5a4a56e852b83"},
@@ -2856,6 +2815,7 @@ description = "OpenAI Agents SDK"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
+markers = "sys_platform == \"win32\""
 files = [
     {file = "openai_agents-0.14.5-py3-none-any.whl", hash = "sha256:16c4ee6e7bd00d40779f36cb902186e34a93e0a135b8532dd3054a4395ae6106"},
     {file = "openai_agents-0.14.5.tar.gz", hash = "sha256:018a9e880450f920fa7c3cd5ae299841f8665f9d1fbce6ef6eb2b807cde24844"},
@@ -3549,6 +3509,7 @@ description = "Python for Window Extensions"
 optional = false
 python-versions = "*"
 groups = ["main"]
+markers = "sys_platform == \"win32\""
 files = [
     {file = "pywin32-311-cp310-cp310-win32.whl", hash = "sha256:d03ff496d2a0cd4a5893504789d4a15399133fe82517455e78bad62efbb7f0a3"},
     {file = "pywin32-311-cp310-cp310-win_amd64.whl", hash = "sha256:797c2772017851984b97180b0bebe4b620bb86328e8a884bb626156295a63b3b"},
@@ -5325,4 +5286,4 @@ cffi = ["cffi (>=1.17,<2.0) ; platform_python_implementation != \"PyPy\" and pyt
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<4.0.0"
-content-hash = "507ddc6f8b929cdaaeafc3ff6a2cc4d1ad701858730bdcc9f331368ecccccbcb"
+content-hash = "36ed3ba829e519903d1a6cded53502c28d9711aef90863d9459ebe7c036b41ac"
