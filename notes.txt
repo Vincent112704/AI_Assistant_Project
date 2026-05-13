@@ -18,7 +18,7 @@ Notes(2026-05-04):
     - Dependency resolvers include packages based on compatibility, but do not guarantee runtime OS match
     - Debug via dependency tree (poetry show --tree or pipdeptree -r -p pywin32 (reverse tree look up))
     - Fix by removing Windows-specific packages or isolating them via OS markers (sys_platform == "win32")
-    - You might have to use alternatives for docx2pdf because of OS incompatibility (check on other libraries that is supports linux)
+    - You might have to use alternatives for docx2pdf because of OS incompatibility (check on other libraries that supports linux)
   - Issue(telegram_push_message_service): 
     - ERROR:root:Failed to send document. Status code: 403, Response: {"ok":false,"error_code":403,"description":"Forbidden: bots can't send messages to bots"}
     - Might have something to do with the chat_id passed. Verify chat_id
