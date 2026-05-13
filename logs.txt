@@ -1,0 +1,26 @@
+PROBLEM:
+- Poetry creates an isolated virtual environment by default
+- Docker was running `python` commands outside that venv, hence docker cannot access the dependencies inside poetry
+- The system Python didn't have FastAPI, uvicorn, or other dependencies installed
+- Result: ModuleNotFoundError for all project dependencies
+
+SOLUTION:
+- Added ENV POETRY_VIRTUALENVS_CREATE=false to Dockerfile
+- This tells Poetry to install packages directly to the system Python instead of creating a separate venv
+- Since Docker containers are already isolated, the venv layer is redundant
+- Now `python` commands have access to all installed dependencies
+
+KEY CHANGES:
+1. Added to Dockerfile (after "RUN pip install poetry"):
+   ENV POETRY_VIRTUALENVS_CREATE=false //prevents poetry from creating a venv by default
+
+2. Kept the rest of the setup:
+   RUN poetry install --no-root
+   (This now installs to system Python, not a venv)
+
+WHY THIS WORKS:
+- Docker provides OS-level isolation, so Python's venv isolation is unnecessary
+- Disabling Poetry's venv simplifies the setup and avoids the mismatch between where packages are installed (venv) vs where commands run (system Python)
+
+ALTERNATIVE (NOT USED):
+- Could have used `poetry run python ...` in the CMD, but disabling the venv is cleaner for containerized environments
