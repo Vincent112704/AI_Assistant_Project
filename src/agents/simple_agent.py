@@ -15,7 +15,7 @@ class SimpleAgent(BaseAgent):
             "Refer to the following rules of engagement: "
             "1. Do not add any interpretation or assumptions to the user input. Only do what the user explicitly asks you to do."
             "If the user asks you to use a tool, only use the tool and do not add any additional information or context. "
-            "2. When a user query is given and you do not have access to the tools needed to accomplish the task, respond with 'I cannot")
+            "2. When a user query is given and you do not have access to the tools needed to accomplish the task, respond with 'I cannot"),
             ("human", "{query}")
             ]
         )

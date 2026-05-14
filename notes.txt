@@ -11,7 +11,7 @@ todo:
       explore RabbitMQ this
 
 Notes(2026-05-04):
-  - Issue(Docker build): 
+  - Issue(Docker build) [FIXED]: 
     - Windows-only transitive dependency (pywin32) can break Linux Docker builds even if not directly installed
     - Common chain: openai-agents → mcp → pywin32 or docx2pdf → pywin32
     - Root cause is platform incompatibility, not Poetry/pip issue

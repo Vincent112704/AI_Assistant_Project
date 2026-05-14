@@ -1,6 +1,7 @@
+import logging
 import re 
 
-
+logging.basicConfig(level=logging.INFO)
 
 def preprocess_string(input_string: str) -> list:
     '''
@@ -8,6 +9,7 @@ def preprocess_string(input_string: str) -> list:
     returns: list - the preprocessed string as a list of words
     '''
     clean_text = re.sub(r'[^\w\s]', '', input_string)
+    logging.info(f"Preprocessed text: {clean_text}")
     return " ".join(clean_text.lower().split())
 
 

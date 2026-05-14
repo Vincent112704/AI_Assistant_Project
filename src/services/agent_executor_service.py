@@ -16,24 +16,22 @@ Input -> LLM reads input -> chooses tool -> executes tool -> [format output if n
 """
 
 def execute_agent(query: str) -> str:
-    try:
-        query_classification = classify_query(query)
-        logging.info(f"Query classified as: {query_classification}")
+    query_classification = classify_query(query)
+    logging.info(f"Query classified as: {query_classification}")
 
-        if query_classification == "simple":
-            logging.info("Executing simple agent...")
-            agent = SimpleAgent(tools=[search_internet])
-            result = agent.run(query)
-            return result
-        #elif query_classification == "complex":
-            #run complex agent
-        #else: do something about the unknown classification returned (i don't know yet)
+    if query_classification == "simple":
+        logging.info("Executing simple agent...")
+        agent = SimpleAgent(tools=[search_internet])
+        result = agent.run(query)
+        return result
+    else:
+        logging.info("simple agent sa akong unahon bai")
+        return True
+    #elif query_classification == "complex":
+        #run complex agent
+    #else: do something about the unknown classification returned (i don't know yet)
 
-        #after finishing executing the agent
-        #call telegram push message service to send the result back to the user via telegram bot
-        #send_telegram_message(result)
+    #after finishing executing the agent
+    #call telegram push message service to send the result back to the user via telegram bot
+    #send_telegram_message(result)
         
-
-    except Exception as e:
-        logging.error(f"Error executing agent: {e}")
-        return f"Error executing agent: {str(e)}"

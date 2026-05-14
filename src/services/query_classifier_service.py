@@ -1,4 +1,7 @@
-from src.utils import preprocess_string
+from src.utils.preprocess_string import preprocess_string
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 SIMPLE_LAYER = [
 "show",
@@ -75,10 +78,13 @@ COMPLEX_LAYER = [
 
 def classify_query(query: str) -> str:
     query = preprocess_string(query)
+    query = query.split(" ")
     for word in query:
+        logging.info(f"Classifying query: checking word '{word}'...")
         if word in SIMPLE_LAYER:
             return "simple"
         elif word in COMPLEX_LAYER:
             return "complex"
         
+    
     return "unknown"
