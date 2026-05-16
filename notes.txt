@@ -1,11 +1,11 @@
 todo:
-    - Test whether simple agent is working
-    - create a docx to pdf service because telegram sendDocument api only accepts PDF or ZIP 
+    - Test whether simple agent is working [Done]
+    - create a docx to pdf service because telegram sendDocument api only accepts PDF or ZIP [Done]
     - Finalize the create_docx_tool on whether you should separate the logic and the tool as 
-      they seem kinda redundant right now
+      they seem kinda redundant right now [Done]
     - register all tools in registry.py
-    - set up firebase
-    - create the telegram_push_message_service 
+    - set up firebase [Done]
+    - create the telegram_push_message_service [Done]
     - set up caching 
     - set up queueing system for jobs (seems kinda overkill for a personal use project but just add it anyway)
       explore RabbitMQ this
@@ -24,8 +24,15 @@ Notes(2026-05-04):
     - Might have something to do with the chat_id passed. Verify chat_id
     - review documentation on the /sendDocument endpoint
   
-Notes(2025-05-15):
-  -Issue(simple_agent.py):
+Notes(2026-05-15):
+  -Issue(simple_agent.py) [FIXED]:
     - TypeError: create_agent() takes from 1 to 2 positional arguments but 3 were given
     - Search on create_agent() on why the arguments we passed are wrong
+
+Notes(2026-05-16):
+  - Simple agent is now functional, add more tools for the simple agent to use
+  - start working on the complex agent for more complex tasks
+  - Solidify the requirements because development is slowing down because requirements are vague
+  - Might have to revisit the architecture because it is not being followed (event-driven architecture)
+  - review the AI generated readme docs because it is not accurate
     

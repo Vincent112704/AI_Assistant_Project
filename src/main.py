@@ -26,8 +26,6 @@ async def telegram_webhook(request: Request, background_tasks: BackgroundTasks):
         #process the user message in the background
         user_message = await request.json()
         query = user_message.get("message", {}).get("text", "")
-        print(user_message)
-        print(query)
         background_tasks.add_task(agent_executor_service.execute_agent, query)
         return JSONResponse(content={"status": "success"}, status_code=200)
     except Exception as e:
