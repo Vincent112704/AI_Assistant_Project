@@ -1,5 +1,6 @@
 from src.agents.base_agent import BaseAgent
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.messages import SystemMessage
 from langchain.agents import create_agent
 import logging
 
@@ -10,16 +11,24 @@ class SimpleAgent(BaseAgent):
 
     def __init__(self, tools=None, memory=None):
         super().__init__(tools, memory)
-        self.template = ChatPromptTemplate(
-            [("system", "You are a helpful assistant that can use tools to help you complete tasks. "
-            "Refer to the following rules of engagement: "
-            "1. Do not add any interpretation or assumptions to the user input. Only do what the user explicitly asks you to do."
-            "If the user asks you to use a tool, only use the tool and do not add any additional information or context. "
-            "2. When a user query is given and you do not have access to the tools needed to accomplish the task, respond with 'I cannot"),
-            ("human", "{query}")
-            ]
-        )
-        self.agent = create_agent(self.llm, self.tools, self.template)
+        # self.template = ChatPromptTemplate(
+        #     [("system", "You are a helpful assistant that can use tools to help you complete tasks. "
+        #     "Refer to the following rules of engagement: "
+        #     "1. Do not add any interpretation or assumptions to the user input. Only do what the user explicitly asks you to do."
+        #     "If the user asks you to use a tool, only use the tool and do not add any additional information or context. "
+        #     "2. When a user query is given and you do not have access to the tools needed to accomplish the task, respond with 'I cannot"),
+        #     ("human", "{query}")
+        #     ]
+        # )
+        self.prompt = SystemMessage(content=
+        '''
+        You are a helpful assistant that can use tools to help you complete tasks.
+        Refer to the following rules of engagement:
+        1. Do not add any interpretation or assumptions to the user input. Only do what the user explicitly asks you to do.
+        If the user asks you to use a tool, only use the tool and do not add any additional information or context.
+        2. When a user query is given and you do not have access to the tools needed to accomplish the task, respond with 'I cannot
+        ''')
+        self.agent = create_agent(model=self.llm, tools=self.tools, system_prompt=self.prompt)
         
 
 
@@ -36,6 +45,6 @@ class SimpleAgent(BaseAgent):
             logging.info(f"Agent response chunk: {chunk}")
             final_state = chunk
 
-        return final_state["messages"][-1]["content"]
+        return final_state.get("model", {}).get("messages", [])[0].content if final_state else "No response generated."
 
     

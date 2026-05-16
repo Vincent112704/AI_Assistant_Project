@@ -17,7 +17,7 @@ def send_telegram_document(Document) -> bool:
     
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendDocument" #currently only accepts ZIP or PDF 
     payload = {
-        "chat_id": os.getenv("TELEGRAM_CHAT_ID"),
+        "chat_id": CHAT_ID
     }
     try:
         response = requests.post(url, data=payload, files={"document": open(Document, "rb")})
@@ -31,5 +31,26 @@ def send_telegram_document(Document) -> bool:
         logging.error(f"Error sending telegram document: {e}")
         return False
     
+def send_telegram_message(message: str) -> bool:
+    logging.info(f"Sending message to Telegram with chat_id {CHAT_ID}...")
+    
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    payload = {
+        "chat_id": CHAT_ID,
+        "text": message
+    }
+    try:
+        response = requests.post(url, data=payload)
+        if response.status_code == 200:
+            logging.info("Message sent successfully.")
+            return True
+        else:
+            logging.error(f"Failed to send message. Status code: {response.status_code}, Response: {response.text}")
+            return False
+    except Exception as e:
+        logging.error(f"Error sending telegram message: {e}")
+        return False
+    
 
-print(send_telegram_document("tmp/test.pdf"))
+
+# print(send_telegram_document("tmp/test.pdf"))

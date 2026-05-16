@@ -2,6 +2,7 @@ from src.services.query_classifier_service import classify_query
 from src.agents.simple_agent import SimpleAgent
 from src.tools.search_internet_tool import search_internet
 import logging
+from src.services.telegram_push_message_service import send_telegram_message 
 
 logging.basicConfig(level=logging.INFO)
 
@@ -18,15 +19,19 @@ Input -> LLM reads input -> chooses tool -> executes tool -> [format output if n
 def execute_agent(query: str) -> str:
     query_classification = classify_query(query)
     logging.info(f"Query classified as: {query_classification}")
-
+    result = ""
     if query_classification == "simple":
         logging.info("Executing simple agent...")
         agent = SimpleAgent(tools=[search_internet])
         result = agent.run(query)
-        return result
+        
     else:
         logging.info("simple agent sa akong unahon bai")
         return True
+
+    #todo:
+    #return result to telegram bot to send back to user
+    send_telegram_message(result)
     #elif query_classification == "complex":
         #run complex agent
     #else: do something about the unknown classification returned (i don't know yet)
