@@ -1,8 +1,7 @@
 # School Assistant Agent
-//todo review and update README.md 
 
 
-A scalable, event-driven school assistant system that processes user requests through Telegram and leverages AI to provide intelligent responses and file management.
+A scalable, event-driven assistant system that processes user requests through Telegram and leverages AI to provide intelligent responses and file management.
 
 ## Table of Contents
 
@@ -20,7 +19,7 @@ A scalable, event-driven school assistant system that processes user requests th
 
 ## Overview
 
-The School Assistant Agent is an intelligent system designed to assist users through Telegram. It processes user inputs, understands context through AI, accesses external tools and resources, and sends appropriate responses and files back to users. The system is built on an Event-Driven Architecture (EDA) to ensure scalability and maintainability.
+The Assistant Agent is an intelligent system designed to assist users through Telegram. It processes user inputs, understands context through AI, accesses external tools and resources, and sends appropriate responses and files back to users. The system is built on an Event-Driven Architecture (EDA) to ensure scalability and maintainability.
 
 ## System Architecture
 
@@ -94,41 +93,22 @@ User Input → Telegram Input Handler Service (Producer)
 
 ### Prerequisites
 - Python 3.8+
-- Node.js 14+
 - Docker and Docker Compose
 - Git
 - Redis
 - Firebase account
 
-### Backend Setup
+### Setup
 
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd school-assistant-agent
+cd personal-assistant-agent
 ```
 
-2. Navigate to the backend directory:
+2. Build docker compose
 ```bash
-cd backend
-```
-
-3. Create a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-4. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-5. Configure environment variables (see [Configuration](#configuration))
-
-6. Run the backend services:
-```bash
-python -m uvicorn main:app --reload
+docker-compose up --build
 ```
 
 
@@ -140,7 +120,6 @@ docker-compose up --build
 ```
 
 2. Services will be accessible at:
-   - Frontend: `http://localhost:3000`
    - Backend API: `http://localhost:8000`
    - Redis: `localhost:6379`
 
@@ -167,11 +146,6 @@ FIREBASE_CLIENT_EMAIL=<your-firebase-client-email>
 REDIS_HOST=localhost
 REDIS_PORT=6379
 REDIS_DB=0
-
-# FastAPI
-FASTAPI_ENV=development
-FASTAPI_HOST=0.0.0.0
-FASTAPI_PORT=8000
 
 # External Tools (configure as needed)
 GOOGLE_SHEETS_API_KEY=<your-google-sheets-api-key>
@@ -207,15 +181,7 @@ Configure API keys for Google Sheets, Google Docs, Notion, or other external too
 # Start all services with Docker Compose
 docker-compose up
 
-# Or run services individually
-# Terminal 1: Start Redis
-redis-server
 
-# Terminal 2: Start Backend
-cd backend && python -m uvicorn main:app --reload
-
-# Terminal 3: Start Frontend
-cd frontend && npm start
 ```
 
 #### Production Mode
@@ -247,25 +213,35 @@ To add more agents in the future:
 
 
 ```
-school-assistant-agent/
-├── backend/
-│   ├── services/
-│   │   ├── telegram_handler.py      # Telegram Input Handler (Producer)
-│   │   ├── agent.py                 # Agent Service (Consumer)
-│   │   ├── response_service.py       # Response Service
-│   │   └── external_tools.py         # External Tool Integration
-│   ├── models/
-│   │   └── schemas.py               # Data Models and Schemas
-│   ├── config/
-│   │   └── settings.py              # Configuration Settings
-│   ├── utils/
-│   │   ├── firebase.py              # Firebase Database Integration
-│   │   ├── redis_client.py          # Redis Client
-│   │   └── openai_client.py         # OpenAI Integration
-|   ├── Dockerfile
-│   ├── main.py                      # FastAPI Application Entry Point
-│   └── requirements.txt             # Python Dependencies
-|   
+personal_assistant_agent/
+├── .vscode/
+│   └── launch.json #Configs for debugger
+├── src/
+│   ├── agents/                                 #file directory for all agents
+│   │   ├── base_agent.py                       #Class that all agents inherit from
+│   │   └── simple_agent.py                     #Agent used for simple tasks
+│   ├── firebase/                               #file directory for firebase configurations
+│   │   └── firebase.py                          
+│   ├── services/                               #apps core business logics
+│   │   ├── agent_executor_service.py           #runs agents 
+│   │   ├── document_generator_service.py       #creates docx file
+│   │   ├── docx_to_pdf_service.py              #converts docx file to pdf
+│   │   ├── query_classifier_service.py         #classifies query to determine which agent to use
+│   │   ├── telegram_input_handler_service.py   #handles telegram input (producer)
+│   │   └── telegram_push_message_service.py    #sends response back to telegram
+│   ├── tools/                                  #tools agents use directory
+│   │   ├── create_docx_tool.py                 #tool used by agent to create a docx file
+│   │   ├── registry.py                         #centralized directory for all the tools agent can use.
+│   │   └── search_internet_tool.py             #tool for searching the internet
+│   ├── utils/                                  #reusable helper function directory
+│   │   └── preprocess_string.py                #cleans string 
+│   └── main.py                                 #entrypoint of app
+├── tmp/                                        #directory for storing document files generated by app
+├── Dockerfile
+├── docker-compose.yml
+├── pyproject.toml                              #dependencies of app
+├── logs.txt                                    #documentation for problems dev has encountered and how dev solved it
+└── notes.txt                                   #documentation for devs notes about the app
 ```
 
 ## Contributing
@@ -273,7 +249,6 @@ school-assistant-agent/
 ### Code Standards
 
 - Follow PEP 8 for Python code
-- Follow ESLint configuration for JavaScript/React code
 - Write clear, descriptive commit messages
 - Include tests for new features
 
@@ -302,4 +277,4 @@ This project is licensed under the MIT License. See LICENSE file for details.
 
 ---
 
-**Last Updated**: April 2026
+**Last Updated**: May 2026
