@@ -9,6 +9,9 @@ services:
       - "8000:8000"
       - "5678:5678"
 
+    depends_on:
+      - redis
+
     environment:
       - DEBUG_MODE=true
 
@@ -25,3 +28,21 @@ services:
       --host 0.0.0.0
       --port 8000
       --reload
+  
+  redis:
+    image: redis:7
+    container_name: redis_container
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]  # Runs "redis-cli ping" to check if Redis is alive
+      interval: 5s  # Check every 5 seconds
+      timeout: 3s   # Wait max 3 seconds for a response
+      retries: 5    # Try 5 times before marking as unhealthy
+      start_period: 10s  # Give Redis 10 seconds to start before first health check
+    volumes:
+      - redis_data:/data
+
+
+volumes:
+  redis_data:

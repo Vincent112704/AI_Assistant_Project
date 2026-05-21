@@ -133,7 +133,8 @@ dependencies = [
     "websockets (==15.0.1)",
     "xxhash (==3.6.0)",
     "yarl (==1.23.0)",
-    "zstandard (==0.25.0)"
+    "zstandard (==0.25.0)",
+    "redis (>=7.4.0,<8.0.0)"
 ]
 
 [build-system]
