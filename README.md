@@ -108,7 +108,12 @@ cd personal-assistant-agent
 
 2. Build docker compose
 ```bash
-docker-compose up --build
+docker-compose up --build #for initial set up
+```
+
+if you an image already exists locally in your docker you can simply do:
+```bash
+docker-compose up
 ```
 
 
