@@ -4,27 +4,31 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 async def consume_message_received():
-    async with redis_client.pubsub() as pubsub:
-        await pubsub.subscribe("MessageReceived")
+    while True:
         try:
-            while True:
-                message = await pubsub.get_message(ignore_subscribe_messages=True, timeout=1.0)
-                if message:
-                    data = message['data']
-                    logging.info(f"Received raw message: {message}")
-                    logging.info(f"Received message on channel 'MessageReceived': {data}")
-                else:
-                    logging.info("No message received, exiting...")
-                    break
-                    
+            pubsub = redis_client.pubsub()
+            await pubsub.subscribe("MessageReceived")
+            async for message in pubsub.listen():
+                if message["type"] == "message":
+                    data = message["data"]
+                    logging.info(f"Received raw message from MessageReceived channel: {message}")
+                    logging.info(f"Consumed MessageReceived event with data: {data}")
+
         except Exception as e:
-            logging.error(f"Error consuming messages: {e}")
-        finally:
-            # Unsubscribe from the channel before closing the socket and retun socket back to the pool
-            await pubsub.unsubscribe("MessageReceived") 
+            logging.error(f"Error consuming MessageReceived event: {e}")
 
 
-"""
+
+'''
 Something is wrong here. I have received the message both in the producer and consumer logs but:
-    - 
-"""
+    1. fastapi-debug-container  | INFO:     Waiting for background tasks to complete. (CTRL+C to force quit)
+      - Something is blocking the program from exiting after processing the message.
+      - hence, it never reaches the finally block to unsubscribe and close the pubsub connection, which might be causing some issues with the Redis connection pool.
+    2. I might have to explore cleaner ways to do the clean up after using sockets
+
+
+Notes:
+ - Producer is working fine, it is publishing the message to the channel as well as the payload
+ - Consumer is able to subscribe based on the logs but it is not exiting
+ - 
+'''
