@@ -1,4 +1,4 @@
-PROBLEM:
+PROBLEM(2026-05-13):
 - Poetry creates an isolated virtual environment by default
 - Docker was running `python` commands outside that venv, hence docker cannot access the dependencies inside poetry
 - The system Python didn't have FastAPI, uvicorn, or other dependencies installed
@@ -24,3 +24,36 @@ WHY THIS WORKS:
 
 ALTERNATIVE (NOT USED):
 - Could have used `poetry run python ...` in the CMD, but disabling the venv is cleaner for containerized environments
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+PROBLEM (2026-05-26):
+The consumer was not able to read messages from the broker because it was not properly mounted to the application lifecycle. Instead, it was being executed only when explicitly called (on-demand), which meant it never stayed active as a background listener. This defeated the purpose of an event-driven architecture (EDA), where consumers are expected to continuously listen for incoming events and react to them in real time.
+
+Because the consumer was not initialized at application startup, no persistent subscription existed to the message broker. As a result, published events were not being picked up automatically, breaking the asynchronous flow between producer → broker → consumer → agents. This effectively turned the system back into a request-driven model rather than an event-driven one.
+
+---
+
+SOLUTION:
+The consumer was mounted to the application lifecycle using FastAPI’s lifespan mechanism via an `async context manager`. The consumer was started during the startup phase using `asyncio.create_task()`, ensuring it runs in the background independently of request handling.
+
+Inside the consumer, an infinite loop combined with `async for` over an async iterator was used to continuously listen for incoming messages from the broker:
+
+- The lifespan function initializes and starts the consumer at app startup.
+- The consumer runs as a background task.
+- The `async for` loop listens to the broker stream indefinitely.
+- The infinite loop ensures continuous processing as long as the application is running.
+
+---
+
+WHY THIS WORKS:
+Mounting the consumer during application startup ensures it is always active and subscribed before any events are produced. This restores the core principle of event-driven architecture: producers emit events without knowing or waiting for consumers, while consumers independently react to events in real time.
+
+Using `asyncio.create_task()` allows the consumer to run concurrently without blocking the FastAPI event loop, while `async for` ensures non-blocking iteration over an asynchronous message stream. Together, they create a persistent, reactive system where the consumer continuously listens, processes messages as they arrive, and maintains decoupling between services.
+
+This design ensures:
+
+- true asynchronous event handling
+- continuous background listening
+- proper separation of concerns
+- correct EDA behavior (producer → broker → consumer decoupling)
+

@@ -35,4 +35,15 @@ Notes(2026-05-16):
   - Solidify the requirements because development is slowing down because requirements are vague
   - Might have to revisit the architecture because it is not being followed (event-driven architecture)
   - review the AI generated readme docs because it is not accurate
+
+Notes(2026-05-26):
+  - producer/consumer architecture is now functional
+  - Nice to have:
+    - CI/CD pipeline through github actions (will work on this in the future)
+  Next agenda:
+   - integrate remaining producers and consumers
+   - will prolly add automated testing through CI/CD
+   - I will start working on the complex and RAG agent
+   - I will create a RAG pipeline for documents
+
     
