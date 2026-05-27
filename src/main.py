@@ -3,8 +3,10 @@ from contextlib import asynccontextmanager
 from fastapi.responses import JSONResponse
 import logging
 from src.events.consumers.consume import consume_message_received
-# from infrastructure.redis.redis import redis_client
 from src.events.producers.message_received_producer import message_received_producer
+# from infrastructure.redis.redis import redis_client #you can uncomment to ping redis_client
+from src.events.producers.message_received_producer import message_received_producer
+from src.services.get_file_service import get_file_service
 import asyncio
 
 logging.basicConfig(level=logging.INFO)
@@ -46,7 +48,14 @@ async def telegram_webhook(request: Request):
         hasDocument = user_message.get("message", {}).get("document", None) is not None
         
         if hasDocument:
-            logging.info("Received a document, ignoring for now")
+            logging.info("Received a document from Telegram, processing it...")
+            file_id = user_message.get('message', {}).get('document', {}).get('file_id', None)
+
+            if file_id is None:
+                logging.error("No file_id found in the document message")
+                return JSONResponse(content={"status": "error", "message": "No file_id found in the document message"}, status_code=400)
+        
+            asyncio.create_task(process_document(file_id))
             return JSONResponse(content={"status": "received document, processing it asynchronously"}, status_code=202)
         else: 
             query = user_message.get("message", {}).get("text", "")
@@ -64,11 +73,20 @@ async def message_received_handler(query: str):
     except Exception as e:
         logging.error(f"Error in message_received_handler: {e}")
 
+
+async def process_document(file_id: str):
+    try:
+        file_path = await get_file_service(file_id)
+        #will be adding emission for DocumentReceived event here once I have the file path from telegram's server, for now just logging it
+        logging.info(f"Got file path from Telegram for file_id {file_id}: {file_path}")
+    except Exception as e:
+        logging.error(f"Error processing document with file_id {file_id}: {e}")
+
 """
 Notes:
-  - might have to add something like asyncio.create_task() to run the producer/consumer in the background without blocking 
-  the main thread. Telegram has to receive a response within a certain time frame otherwise it will consider the webhook request failed, 
-  so we can't have any long running tasks in the main thread.
-  - 
+  - currently working on the telegram webhook for receiving documents, still conflicted on how I want to do it.
+  right now, I am considering two options:
+    1. when file id is received should I run the process on the background as well at the event emission?
+    2. should I just wait for file path to be received but it would block the main thread. This is simpler but I still don't know if it's worth the tradeoff.
  
 """
