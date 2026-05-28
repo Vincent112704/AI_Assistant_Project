@@ -11,7 +11,7 @@ TELEGRAM_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
 FILE_PATH = 'documents/file_0.pdf'
 
-async def get_file_bytes(file_path: str) -> bytes:
+async def get_file_bytes(file_path: str) -> bytes | None:
     '''
     args: file_path - the file path of the document in Telegram's servers
     returns: the actual file bytes of the document

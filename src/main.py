@@ -2,14 +2,20 @@ from fastapi import FastAPI, Request
 from contextlib import asynccontextmanager
 from fastapi.responses import JSONResponse
 import logging
+
+#consumers 
 from src.events.consumers.consume import consume_message_received
 from src.events.producers.message_received_producer import message_received_producer
-# from infrastructure.redis.redis import redis_client #you can uncomment to ping redis_client
-from src.events.producers.message_received_producer import message_received_producer
-from src.services.get_file_service import get_file_service
-import asyncio
-from src.services.get_file_bytes import get_file_bytes
 
+#producers
+from src.events.producers.message_received_producer import message_received_producer
+from src.events.producers.document_received_producer import document_received_producer
+
+#services
+from src.services.get_file_service import get_file_service
+
+
+import asyncio
 logging.basicConfig(level=logging.INFO)
 
 @asynccontextmanager
@@ -28,11 +34,6 @@ async def lifespan(app):
 
 app = FastAPI(lifespan=lifespan)
 
-
-
-# @app.get("/")
-# async def test_redis():
-#     return {"redis_status": await redis_client.ping()} 
 
 @app.post("/webhook")
 async def telegram_webhook(request: Request):
@@ -77,8 +78,16 @@ async def message_received_handler(query: str):
 async def process_document(file_id: str):
     try:
         file_path = await get_file_service(file_id)
-        #will be adding emission for DocumentReceived event here once I have the file path from telegram's server, for now just logging it
-        logging.info(f"Got file path from Telegram for file_id {file_id}: {file_path}")
+
+        if file_path is None:
+            return
+        
+        await document_received_producer({file_id: file_id, "file_path": file_path})
+        #event should not be sending raw file bytes just the metadata
+        #the consumer itself should be responsible for getting the file bytes when it receives the event with the file path. 
+        #This is because the producer should only be responsible for publishing the event and not doing any heavy lifting like getting the file bytes which can be done in the consumer when it receives the event. 
+        #This also makes the producer more lightweight and faster to publish events.
+
     except Exception as e:
         logging.error(f"Error processing document with file_id {file_id}: {e}")
 
