@@ -4,8 +4,7 @@ from fastapi.responses import JSONResponse
 import logging
 
 #consumers 
-from src.events.consumers.consume import consume_message_received
-from src.events.producers.message_received_producer import message_received_producer
+from src.events.consumers.consume_message_received import consume_message_received
 
 #producers
 from src.events.producers.message_received_producer import message_received_producer
