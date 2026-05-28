@@ -8,6 +8,7 @@ from src.events.producers.message_received_producer import message_received_prod
 from src.events.producers.message_received_producer import message_received_producer
 from src.services.get_file_service import get_file_service
 import asyncio
+from src.services.get_file_bytes import get_file_bytes
 
 logging.basicConfig(level=logging.INFO)
 
@@ -32,7 +33,6 @@ app = FastAPI(lifespan=lifespan)
 # @app.get("/")
 # async def test_redis():
 #     return {"redis_status": await redis_client.ping()} 
-
 
 @app.post("/webhook")
 async def telegram_webhook(request: Request):

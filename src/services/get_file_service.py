@@ -10,7 +10,7 @@ load_dotenv()
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
 
-async def get_file_service(file_id: str):
+async def get_file_service(file_id: str) -> str | None:
     '''
     args: file_id - the file_id of the document sent by the user in Telegrama
     returns: the file path of the document in Telegram's servers
@@ -23,6 +23,7 @@ async def get_file_service(file_id: str):
             if response.status_code != 200:
                 logging.error(f"Failed to get file path from Telegram for file_id {file_id}. Status code: {response.status_code}, Response: {response.text}")
                 return None
+            logging.info(f"Received response from Telegram for file_id {file_id}: {response.json()}")
             file_path = response.json().get("result", {}).get("file_path", None)
             if file_path is None:
                 logging.error(f"No file_path found in Telegram response for file_id {file_id}. Response: {response.text}")
