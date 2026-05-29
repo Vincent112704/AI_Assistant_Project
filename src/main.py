@@ -5,7 +5,7 @@ import logging
 
 #consumers 
 from src.events.consumers.consume_message_received import consume_message_received
-
+from src.events.consumers.consume_document_message import consume_document_message
 #producers
 from src.events.producers.message_received_producer import message_received_producer
 from src.events.producers.document_received_producer import document_received_producer
@@ -22,6 +22,7 @@ async def lifespan(app):
     # Initialize resources here (e.g., database connections, Redis clients)
     # await redis_client.initialize()  # Example: Initialize Redis client
     asyncio.create_task(consume_message_received())
+    asyncio.create_task(consume_document_message())
     logging.info("Application startup: Resources initialized")
     
     yield  # This is where the application runs
@@ -81,7 +82,7 @@ async def process_document(file_id: str):
         if file_path is None:
             return
         
-        await document_received_producer({file_id: file_id, "file_path": file_path})
+        await document_received_producer({"file_id": file_id, "file_path": file_path})
         #event should not be sending raw file bytes just the metadata
         #the consumer itself should be responsible for getting the file bytes when it receives the event with the file path. 
         #This is because the producer should only be responsible for publishing the event and not doing any heavy lifting like getting the file bytes which can be done in the consumer when it receives the event. 
